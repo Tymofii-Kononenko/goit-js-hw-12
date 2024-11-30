@@ -6,6 +6,7 @@ import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
 const form = document.querySelector("form");
+const list = document.querySelector(".gallery")
 
 form.addEventListener('submit', onSearchButton);
 
@@ -18,6 +19,7 @@ function onSearchButton(e) {
         return;
     }
     form.insertAdjacentHTML('afterend', '<span class="loader"></span>');
+    list.innerHTML = '';
     getPhotos(inputSearch)
     form.reset();
 
