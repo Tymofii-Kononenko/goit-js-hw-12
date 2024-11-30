@@ -22,14 +22,15 @@ export const getPhotos = inputSearch => {
         .then(response => { return response.json() })
         .then(photos => {
 
+            const loader = document.querySelector('.loader')
             const arrayPhotos = photos.hits;
 
             if (arrayPhotos.length === 0) {
                 noImages();
+                loader.remove();
                 return;
             }
 
-            const loader = document.querySelector('.loader')
 
             renderPhotos(arrayPhotos);
             loader.remove();
