@@ -1,12 +1,5 @@
-import iziToast from "izitoast";
-import "izitoast/dist/css/iziToast.min.css";
-
-import SimpleLightbox from "simplelightbox";
-import "simplelightbox/dist/simple-lightbox.min.css";
-
-
 import { renderPhotos } from "./render-functions.js";
-
+import { noImages, simpleLightbox } from "../main.js"
 
 
 export const getPhotos = inputSearch => {
@@ -42,21 +35,3 @@ export const getPhotos = inputSearch => {
         })
 }
 
-function noImages() {
-    iziToast.error({
-        messageColor: '#FFF',
-        color: '#EF4040',
-        position: 'topRight',
-        message: 'Sorry, there are no images matching your search query. Please try again!',
-    });
-}
-
-function simpleLightbox() {
-    let gallery = new SimpleLightbox('.gallery a', {
-        captionsData: 'alt',
-        captionsPosition: 'bottom',
-        captionDelay: 250,
-    });
-    gallery.on('show.simpleLightbox');
-    gallery.refresh();
-}
