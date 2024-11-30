@@ -1,5 +1,6 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
+import { renderPhotos } from "./render-functions.js";
 
 export const getPhotos = inputSearch => {
     const params = new URLSearchParams({
@@ -13,12 +14,14 @@ export const getPhotos = inputSearch => {
     return fetch(url)
         .then(response => { return response.json() })
         .then(photos => {
-            console.log(photos);
 
             const arrayPhotos = photos.hits;
+
             if (arrayPhotos.length === 0) {
                 noImages();
+                return;
             }
+            renderPhotos(arrayPhotos);
         })
 }
 
