@@ -1,6 +1,13 @@
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
+
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
+
+
 import { renderPhotos } from "./render-functions.js";
+
+
 
 export const getPhotos = inputSearch => {
     const params = new URLSearchParams({
@@ -22,6 +29,7 @@ export const getPhotos = inputSearch => {
                 return;
             }
             renderPhotos(arrayPhotos);
+            simpleLightbox()
         })
 }
 
@@ -32,4 +40,14 @@ function noImages() {
         position: 'topRight',
         message: 'Sorry, there are no images matching your search query. Please try again!',
     });
+}
+
+function simpleLightbox() {
+    let gallery = new SimpleLightbox('.gallery a', {
+        captionsData: 'alt',
+        captionsPosition: 'bottom',
+        captionDelay: 250,
+    });
+    gallery.on('show.simpleLightbox');
+    gallery.refresh();
 }

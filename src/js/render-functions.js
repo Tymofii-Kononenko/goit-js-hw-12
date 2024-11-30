@@ -11,14 +11,10 @@ form.addEventListener('submit', onSearchButton);
 function onSearchButton(e) {
     e.preventDefault();
     const inputSearch = form.elements.search.value;
+
     if (inputSearch === "") {
-        iziToast.show({
-            messageColor: '#FFF',
-            color: '#EF4040',
-            position: 'center',
-            message: 'Please,enter what do you want to find!',
-        });
-        return
+        noInput();
+        return;
     }
     getPhotos(inputSearch)
     form.reset();
@@ -41,5 +37,12 @@ export const renderPhotos = photos => {
 
 }
 
-
+function noInput() {
+    iziToast.error({
+        messageColor: '#FFF',
+        color: '#EF4040',
+        position: 'topRight',
+        message: 'Please,enter what do you want to find!',
+    });
+}
 
