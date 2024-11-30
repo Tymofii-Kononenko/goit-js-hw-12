@@ -16,8 +16,10 @@ function onSearchButton(e) {
         noInput();
         return;
     }
+    form.insertAdjacentHTML('afterend', '<span class="loader"></span>');
     getPhotos(inputSearch)
     form.reset();
+
 }
 
 export const renderPhotos = photos => {

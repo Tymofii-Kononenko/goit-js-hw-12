@@ -28,8 +28,16 @@ export const getPhotos = inputSearch => {
                 noImages();
                 return;
             }
+
+            const loader = document.querySelector('.loader')
+
             renderPhotos(arrayPhotos);
+            loader.remove();
             simpleLightbox()
+        })
+        .catch(error => {
+            console.log(error.message);
+
         })
 }
 
