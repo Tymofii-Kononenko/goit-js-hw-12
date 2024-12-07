@@ -20,15 +20,5 @@ export default async function getPhotos(inputSearch, page) {
     }
     catch {
         console.log('error');
-        ;
-
     }
-
-    // return fetch(url).then(response => {
-    //     if (!response.ok) {
-    //         throw new Error(`HTTP error! Status: ${response.status}`);
-    //     }
-    //     return response.json();
-    // });
 };
-

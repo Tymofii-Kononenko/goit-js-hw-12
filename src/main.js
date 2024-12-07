@@ -1,5 +1,7 @@
 import getPhotos from "./js/pixabay-api.js";
+
 import { renderPhotos } from "./js/render-functions.js";
+
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
 import SimpleLightbox from "simplelightbox";
@@ -9,14 +11,30 @@ const form = document.querySelector("form");
 const list = document.querySelector(".gallery");
 const loadMore = document.querySelector(".load-more");
 
+loadMore.addEventListener('click', loadMoreBtn);
+
 form.addEventListener('submit', onSearchButton);
 
 let page = 1;
+let inputSearch;
 
-function onSearchButton(e) {
+async function loadMoreBtn(e) {
     e.preventDefault();
-    const inputSearch = form.elements.search.value;
+    try {
+        page += 1;
 
+        const photos = await getPhotos(inputSearch, page);
+
+        handlePhotosResponse(photos);
+    } catch (error) {
+        console.error(error.message);
+    }
+}
+
+
+async function onSearchButton(e) {
+    e.preventDefault();
+    inputSearch = form.elements.search.value;
 
     if (inputSearch === "") {
         noInput();
@@ -26,17 +44,19 @@ function onSearchButton(e) {
     form.insertAdjacentHTML('afterend', '<span class="loader"></span>');
     list.innerHTML = '';
 
-    getPhotos(inputSearch, page)
-        .then(photos => handlePhotosResponse(photos))
-        .catch(error => {
-            console.error(error.message);
-            document.querySelector('.loader').remove();
-        });
+    try {
+        const photos = await getPhotos(inputSearch);
+        handlePhotosResponse(photos);
+    } catch (error) {
+        console.error(error.message);
+    } finally {
+        document.querySelector('.loader');
+    }
 
     loadMore.classList.remove('hidden');
-
     form.reset();
 }
+
 
 function handlePhotosResponse(photos) {
     const loader = document.querySelector('.loader');
@@ -44,15 +64,20 @@ function handlePhotosResponse(photos) {
 
     if (arrayPhotos.length === 0) {
         noImages();
-        loader.remove();
+        if (loader) {
+            loader.remove();
+        }
         return;
     }
 
     renderPhotos(arrayPhotos);
-    loader.remove();
+    if (loader) {
+        loader.remove();
+    }
     initializeSimpleLightbox();
     form.reset();
 }
+
 
 function noInput() {
     iziToast.error({

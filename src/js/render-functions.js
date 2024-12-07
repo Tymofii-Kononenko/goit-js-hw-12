@@ -13,7 +13,7 @@ export const renderPhotos = photos => {
     <p><span>Downloads</span> ${downloads}</p>
   </div>
    </li>`).join('');
-    list.innerHTML = markup;
+    list.insertAdjacentHTML('beforeend', markup);
 
 }
 
