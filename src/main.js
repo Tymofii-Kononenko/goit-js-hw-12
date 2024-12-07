@@ -1,4 +1,4 @@
-import { getPhotos } from "./js/pixabay-api.js";
+import getPhotos from "./js/pixabay-api.js";
 import { renderPhotos } from "./js/render-functions.js";
 import iziToast from "izitoast";
 import "izitoast/dist/css/iziToast.min.css";
@@ -7,12 +7,16 @@ import "simplelightbox/dist/simple-lightbox.min.css";
 
 const form = document.querySelector("form");
 const list = document.querySelector(".gallery");
+const loadMore = document.querySelector(".load-more");
 
 form.addEventListener('submit', onSearchButton);
+
+let page = 1;
 
 function onSearchButton(e) {
     e.preventDefault();
     const inputSearch = form.elements.search.value;
+
 
     if (inputSearch === "") {
         noInput();
@@ -22,19 +26,21 @@ function onSearchButton(e) {
     form.insertAdjacentHTML('afterend', '<span class="loader"></span>');
     list.innerHTML = '';
 
-    getPhotos(inputSearch)
+    getPhotos(inputSearch, page)
         .then(photos => handlePhotosResponse(photos))
         .catch(error => {
             console.error(error.message);
             document.querySelector('.loader').remove();
         });
 
+    loadMore.classList.remove('hidden');
+
     form.reset();
 }
 
 function handlePhotosResponse(photos) {
     const loader = document.querySelector('.loader');
-    const arrayPhotos = photos.hits;
+    const arrayPhotos = photos;
 
     if (arrayPhotos.length === 0) {
         noImages();
