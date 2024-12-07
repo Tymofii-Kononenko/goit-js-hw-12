@@ -18,11 +18,14 @@ form.addEventListener('submit', onSearchButton);
 async function loadMoreBtn(e) {
     e.preventDefault();
     loadMore.disabled = true;
+    showSpiner();
 
     try {
         page += 1;
-        const { photosArr, isLastPage } = await getPhotos(inputSearch, page);
+        const { photosArr, totalPages } = await getPhotos(inputSearch, page);
+        const isLastPage = page >= totalPages;
         handlePhotosResponse(photosArr, isLastPage);
+        hideSpiner()
     } catch (error) {
         console.error(error.message);
     }
@@ -34,6 +37,7 @@ async function loadMoreBtn(e) {
 async function onSearchButton(e) {
     e.preventDefault();
     inputSearch = form.elements.search.value;
+    showSpiner()
     loadMore.classList.add('hidden');
     list.innerHTML = '';
 
@@ -43,9 +47,10 @@ async function onSearchButton(e) {
     }
 
     try {
-        const { photosArr, isLastPage } = await getPhotos(inputSearch, page);
+        const { photosArr, totalPages } = await getPhotos(inputSearch, page);
+        const isLastPage = page >= totalPages;
         handlePhotosResponse(photosArr, isLastPage);
-
+        hideSpiner()
     } catch (error) {
         console.error(error.message);
     }
@@ -67,7 +72,6 @@ function handlePhotosResponse(photos, isLastPage) {
     }
 
     renderPhotos(arrayPhotos);
-
 
     if (isLastPage) {
         loadMore.classList.add('hidden');
@@ -125,3 +129,15 @@ function smoothScroll() {
         behavior: 'smooth',
     });
 }
+
+
+export const showSpiner = function () {
+    const loaderMore = document.querySelector('.loaderMore');
+    loaderMore.innerHTML = '<span class="loader"></span>';
+};
+
+export const hideSpiner = function () {
+    const load = document.querySelector('.load');
+    const loaderMore = document.querySelector('.loaderMore');
+    loaderMore.innerHTML = '';
+};
