@@ -34,6 +34,7 @@ async function loadMoreBtn(e) {
 async function onSearchButton(e) {
     e.preventDefault();
     inputSearch = form.elements.search.value;
+    loadMore.classList.add('hidden');
     list.innerHTML = '';
 
     if (inputSearch === "") {
@@ -44,6 +45,7 @@ async function onSearchButton(e) {
     try {
         const { photosArr, isLastPage } = await getPhotos(inputSearch, page);
         handlePhotosResponse(photosArr, isLastPage);
+
     } catch (error) {
         console.error(error.message);
     }
