@@ -37,6 +37,7 @@ async function loadMoreBtn(e) {
 async function onSearchButton(e) {
     e.preventDefault();
     inputSearch = form.elements.search.value;
+    page = 1;
     showSpiner()
     loadMore.classList.add('hidden');
     list.innerHTML = '';
